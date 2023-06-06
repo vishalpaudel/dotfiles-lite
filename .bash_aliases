@@ -22,7 +22,7 @@ alias_if_exists 'cd' 'z'
 
 # OTHER ALIASES ----------------------------------------------
 alias reload="source ~/.bashrc"
-alias g++="g++ -x c++ -g -O2 -std=gnu++20 -Wall -o cpp.out"
+alias g++="/usr/local/bin/g++ -x c++ -std=c++17 -Wall -o cpp.out"
 alias scheme="podman run -it --rm inikolaev/alpine-scheme"
 alias ls="ls --color=always"
 
