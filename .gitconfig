@@ -1,3 +1,5 @@
 [user]
 	name = Vishal Paudel
 	email = 95016059+vishalpaudel@users.noreply.github.com
+[init]
+	defaultBranch = master

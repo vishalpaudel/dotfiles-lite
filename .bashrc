@@ -16,10 +16,16 @@ shopt -s expand_aliases
 shopt -s globstar
 shopt -s dotglob
 shopt -s extglob
+shopt -s direxpand                          # expands directory when tabbing
 
 # ------------------------------ env -----------------------------
 # NOTE: Environment Setup, Shell Agnostic. Should work both with bash and zsh(X)
 
+# Language Specific Paths -----------------------------------
+export PYTHONPATH="/opt/homebrew/Cellar/python@3.11/3.11.3/bin"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home/"
+
+# Helper functions for path ---------------------------------
 function prepend_path() {
     for prog in $@; do
         # Does the alias only if the aliased program is installed
@@ -45,9 +51,11 @@ function append_path() {
 prepend_path "$HOME/local/bin"                                  # Local bins
 prepend_path "$HOME/bin"                                        # Custom scripts
 prepend_path "/opt/homebrew/opt/llvm/bin"
+prepend_path "/opt/homebrew/opt/openjdk/bin"
 prepend_path "/opt/homebrew/bin"                                # Homebrew
 
 append_path "$PYTHONPATH"                                       # Python
+append_path "$JAVA_HOME"                                        # Java
 
 # OTHERS ----------------------------------------------------
 export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
@@ -64,9 +72,10 @@ export EDITOR=vi
 export VISUAL=vi
 export EDITOR_PREFIX=vi
 
-# PYTHON ----------------------------------------------------
-# set PYTHONPATH for local user packages ?
-PYTHONPATH="/opt/homebrew/Cellar/python@3.11/3.11.3/bin"
+# ----------------------- environment variables ----------------------
+export DOTFILES="$HOME/dotfiles-lite"
+export SCRIPTS="$DOTFILES/.scripts"
+export CP_HOME="$HOME/Documents/competitive-programming"
 
 # MISC SOFTWARE --------------------------------------------
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
@@ -138,6 +147,11 @@ __ps1() {
 }
 
 PROMPT_COMMAND="__ps1"
+
+# --------------------------- my tools ---------------------------
+for file in $SCRIPTS/*.sh; do
+    . $file
+done
 
 # EOF
 
