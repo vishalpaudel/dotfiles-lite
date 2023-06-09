@@ -15,7 +15,7 @@ function alias_if_exists() {
 
 # PROGRAM ALIASES
 alias_if_exists 'diff' 'colordiff'
-# alias_if_exists 'vim' 'nvim'
+alias_if_exists 'vim' 'nvim'
 alias_if_exists 'fish' 'asciiquarium'
 alias_if_exists 'matrix' 'cmatrix'
 alias_if_exists 'cd' 'z'

@@ -34,6 +34,8 @@ augroup END
 autocmd BufNewFile *.cpp -r ${CP_HOME}/misc/temp.cpp
 " start at last place you were editing
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" increase fold level
+autocmd FileType Results setlocal foldlevel=5
 
 " Appearance settings ---------------------
 colorscheme gruvbox
