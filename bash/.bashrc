@@ -22,8 +22,8 @@ shopt -s direxpand                          # expands directory when tabbing
 # NOTE: Environment Setup, Shell Agnostic. Should work both with bash and zsh(X)
 
 # Language Specific Paths -----------------------------------
-export PYTHONPATH="/opt/homebrew/Cellar/python@3.11/3.11.3/bin"
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home/"
+export PYTHONPATH="/opt/homebrew/Cellar/python@3.11/3.11.*/bin"
+# export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home/"
 
 # Helper functions for path ---------------------------------
 function prepend_path() {
@@ -48,14 +48,14 @@ function append_path() {
 }
 
 # Can do in a single line or with '\'
-prepend_path "$HOME/local/bin"                                  # Local bins
-prepend_path "$HOME/bin"                                        # Custom scripts
-prepend_path "/opt/homebrew/opt/llvm/bin"
-prepend_path "/opt/homebrew/opt/openjdk/bin"
+# prepend_path "$HOME/local/bin"                                  # Local bins
+# prepend_path "$HOME/bin"                                        # Custom scripts
+# prepend_path "/opt/homebrew/opt/llvm/bin"
+# prepend_path "/opt/homebrew/opt/openjdk/bin"
 prepend_path "/opt/homebrew/bin"                                # Homebrew
 
 append_path "$PYTHONPATH"                                       # Python
-append_path "$JAVA_HOME"                                        # Java
+# append_path "$JAVA_HOME"                                        # Java
 
 # OTHERS ----------------------------------------------------
 export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
@@ -74,7 +74,7 @@ export EDITOR_PREFIX=vi
 
 # ----------------------- environment variables ----------------------
 export DOTFILES="$HOME/dotfiles-lite"
-export SCRIPTS="$DOTFILES/.scripts"
+export SCRIPTS="$HOME/.scripts"
 export CP_HOME="$HOME/Documents/competitive-programming"
 
 # MISC SOFTWARE --------------------------------------------
