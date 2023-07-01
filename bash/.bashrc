@@ -156,3 +156,4 @@ done
 
 # EOF
 
+. "$HOME/.cargo/env"

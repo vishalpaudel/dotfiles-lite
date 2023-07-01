@@ -88,6 +88,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Language Support
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'rust-lang/rust.vim'
+Plug 'simrat39/rust-tools.nvim'
 
 " Enhance features
 Plug 'declancm/cinnamon.nvim'
@@ -103,9 +104,11 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " Autocomplete
 Plug 'neovim/nvim-lspconfig'
-Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
+
+Plug 'saadparwaiz1/cmp_luasnip'
+
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
@@ -127,6 +130,58 @@ let g:fzf_layout = {'window': {'width': 0.8, 'height': 0.8, 'relative': 'editor'
 let g:gitgutter_enabled = 1
 let g:SignatureEnabledAtStartup = 1
 let g:indentLine_enabled = 1
+
+" Enhancements
+autocmd VimLeave * execute 'silent! write !echo "%:p:h" > /tmp/pwd-info' | redraw!
+let g:cph#dir = '/Users/vpaudel343/Documents/competitive-programming/practice'
+let g:cph#cpp#compile_command = 'g++ -x c++ -std=gnu++17 -Wall -o cpp.out solution.cpp'
+let g:cph#url_register = 'p'
+
+" Other Sensible
+" Commands to change directory to current file's and back to global
+nnoremap <silent> <Leader>cd :lcd %:p:h \| pwd<CR>
+nnoremap <silent> <Leader>cD :exe "lcd" getcwd(-1, -1) \| pwd<CR>
+
+" Delete buffer without destroying window layout
+command -bang Bdelete bp | bd<bang>#
+
+" clear-highlight
+nnoremap <silent> <Esc> :noh<CR>
+
+" Because default clang-format settings, as well as my zshrc, have 2 spaces
+au FileType c,cpp,zsh,yaml set ts=2 | set sw=2 | set expandtab
+
+" Autoformat json
+au FileType json noremap <Leader>f :%!json_pp<CR>
+
+" Text file editing
+au FileType text set wrap
+
+" Search results centered please
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+nnoremap <C-o> <C-o>zz
+nnoremap <C-i> <C-i>zz
+
+" Unbind for tmux
+map <C-a> <Nop>
+map <C-x> <Nop>
+
+" Convert binary file to readable bytes output and vice-versa
+function Xxd()
+	if &binary
+		%!xxd -r
+		set nobinary
+	else
+		set binary
+		%!xxd
+	endif
+endfunction
+
+noremap <Leader>x :call Xxd()<CR>
 
 " Language Support
 lua << EOF
@@ -218,43 +273,3 @@ require('cinnamon').setup {
   scroll_limit = -1,
 }
 EOF
-
-" Enhancements
-autocmd VimLeave * execute 'silent! write !echo "%:p:h" > /tmp/pwd-info' | redraw!
-let g:cph#dir = '/Users/vpaudel343/Documents/competitive-programming/practice'
-let g:cph#cpp#compile_command = 'g++ -x c++ -std=gnu++17 -Wall -o cpp.out solution.cpp'
-let g:cph#url_register = 'p'
-
-" Other Sensible
-" Commands to change directory to current file's and back to global
-nnoremap <silent> <Leader>cd :lcd %:p:h \| pwd<CR>
-nnoremap <silent> <Leader>cD :exe "lcd" getcwd(-1, -1) \| pwd<CR>
-
-" Delete buffer without destroying window layout
-command -bang Bdelete bp | bd<bang>#
-
-" clear-highlight
-nnoremap <silent> <Esc> :noh<CR>
-
-" Because default clang-format settings, as well as my zshrc, have 2 spaces
-au FileType c,cpp,zsh,yaml set ts=2 | set sw=2 | set expandtab
-
-" Autoformat json
-au FileType json noremap <Leader>f :%!json_pp<CR>
-
-" Text file editing
-au FileType text set wrap
-
-" Search results centered please
-nnoremap <silent> n nzz
-nnoremap <silent> N Nzz
-nnoremap <silent> * *zz
-nnoremap <silent> # #zz
-nnoremap <silent> g* g*zz
-nnoremap <C-o> <C-o>zz
-nnoremap <C-i> <C-i>zz
-
-" Unbind for tmux
-map <C-a> <Nop>
-map <C-x> <Nop>
-
