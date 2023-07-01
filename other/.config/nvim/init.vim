@@ -1,48 +1,11 @@
 " What I want
-" netrw, auto-save, last-location, undo
-" Gruvbox
-" FZF
-" Git
-" Language Support
+" sane defaults, netrw, auto-save, last-location, undo
+" Gruvbox, FZF, Git, Language Support -- Prefer juneggun and tpope
 " Enhancements: smooth scrolling, buffer shortcuts, text objects
-" Prefer juneggun and tpope
+
 let g:mapleader = ' '
 
-" Sensible stuff
-" netrw
-let g:netrw_winsize = 30
-let g:netrw_bufsettings = 'nomodifiable nomodified readonly nobuflisted nowrap number'
-au FileType netrw setl bufhidden=delete
-noremap <Leader>e -
-
-" auto-save
-autocmd TextChanged,TextChangedI <buffer> silent write
-
-" last-location
-au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis
-
-" clear-highlight
-nnoremap <silent> <Esc> :noh<CR>
-
-" undo
-set undofile
-set undodir=~/.vim/undodir
-
-" Search results centered please
-nnoremap <silent> n nzz
-nnoremap <silent> N Nzz
-nnoremap <silent> * *zz
-nnoremap <silent> # #zz
-nnoremap <silent> g* g*zz
-nnoremap <C-o> <C-o>zz
-nnoremap <C-i> <C-i>zz
-
-" Unbind for tmux
-map <C-a> <Nop>
-map <C-x> <Nop>
-
-" Defaults
+" sane Defaults
 " Basics
 set breakindent        " Wrapped part of any line also appears indented
 set linebreak          " When wrapping text, break on word boundaries
@@ -76,14 +39,23 @@ set foldnestmax=10
 set foldexpr=nvim_treesitter#foldexpr()
 set foldmethod=expr    " Fold according to given expression (treesitter)
 
-" Because default clang-format settings, as well as my zshrc, have 2 spaces
-au FileType c,cpp,zsh,yaml set ts=2 | set sw=2 | set expandtab
+" netrw -----------------------------------------------------------------------
+let g:netrw_winsize = 30
+let g:netrw_liststyle = 3
+let g:netrw_bufsettings = 'nomodifiable nomodified readonly nobuflisted nowrap number'
+au FileType netrw setl bufhidden=delete
+noremap <Leader>e :Lex<CR>
 
-" Autoformat json
-au FileType json noremap <Leader>f :%!json_pp<CR>
+" auto-save -------------------------------------------------------------------
+autocmd TextChanged,TextChangedI <buffer> silent write
 
-" Text file editing
-au FileType text set wrap
+" last-location ---------------------------------------------------------------
+au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis
+
+" undo ----------------------------------------------------------------
+set undofile
+set undodir=~/.vim/undodir
 
 call plug#begin()
 " Sensible stuff
@@ -98,7 +70,7 @@ Plug 'tpope/vim-commentary'
 Plug 'junegunn/vim-easy-align'
 
 " Colorscheme
-Plug 'ellisonleao/gruvbox.nvim'
+Plug 'morhetz/gruvbox'
 Plug 'yggdroot/indentline'
 
 " Search
@@ -131,12 +103,10 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " Autocomplete
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
 Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 " Colorscheme
@@ -161,28 +131,7 @@ let g:indentLine_enabled = 1
 " Language Support
 lua << EOF
 -- Completion
-local cmp = require'cmp'
-cmp.setup({
-snippet = {expand = function(args) require('luasnip').lsp_expand(args.body) end},
-mapping = cmp.mapping.preset.insert({
-["<C-Space>"] = cmp.mapping.confirm(),
-["<Tab>"] = cmp.mapping.select_next_item(),
-["<S-Tab>"] = cmp.mapping.select_prev_item(),
-}),
-sources = cmp.config.sources({{name='nvim_lsp'}, {name='luasnip'}}, {{name='buffer'}}, {{name='path'}})
-})
-
--- Use buffer source for `/` and `?` (Doesn't work on enabling `native_menu`).
-cmp.setup.cmdline({'/', '?'}, {
-	mapping = cmp.mapping.preset.cmdline(),
-	sources = {{name = 'buffer'}}
-})
-
--- Use cmdline & path source for ':' (Doesn't work on enabling `native_menu`).
-cmp.setup.cmdline(':', {
-	mapping = cmp.mapping.preset.cmdline(),
-	sources = cmp.config.sources({{name = 'path'}}, {{name = 'cmdline'}})
-})
+-- COC works out of the box?
 
 -- Set up lspconfig.
 local function on_attach(client, buf)
@@ -283,3 +232,29 @@ nnoremap <silent> <Leader>cD :exe "lcd" getcwd(-1, -1) \| pwd<CR>
 
 " Delete buffer without destroying window layout
 command -bang Bdelete bp | bd<bang>#
+
+" clear-highlight
+nnoremap <silent> <Esc> :noh<CR>
+
+" Because default clang-format settings, as well as my zshrc, have 2 spaces
+au FileType c,cpp,zsh,yaml set ts=2 | set sw=2 | set expandtab
+
+" Autoformat json
+au FileType json noremap <Leader>f :%!json_pp<CR>
+
+" Text file editing
+au FileType text set wrap
+
+" Search results centered please
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+nnoremap <C-o> <C-o>zz
+nnoremap <C-i> <C-i>zz
+
+" Unbind for tmux
+map <C-a> <Nop>
+map <C-x> <Nop>
+
