@@ -1,2 +1,9 @@
+set completion-ignore-case on
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+set menu-complete-display-prefix on
+
+set enable-bracketed-paste on
 set editing-mode vi
-set keymap vi-command
+#set bell-style none                                        # MAKE IT STOP!!
+set keymap vi

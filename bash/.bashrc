@@ -4,6 +4,7 @@
 export HISTCONTROL=ignoreboth
 export HISTSIZE=5000
 export HISTFILESIZE=10000
+export HISTFILE=~/.cache/.bash_history
 
 set -o vi
 shopt -s histappend
